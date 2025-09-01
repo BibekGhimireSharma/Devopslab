@@ -1,4 +1,4 @@
-# 🚀 LeetCode DSA Solutions – Java
+#  LeetCode DSA Solutions – Java
 
 > A curated collection of my LeetCode problem solutions written in Java for quick revision & interview prep.
 
