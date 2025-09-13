@@ -27,4 +27,4 @@ Java ☕
 - 🔍 Searching & Sorting
 
 ## ⭐ Purpose
-Revise anytime. Track progress. Ace interviews.
+Revise anytime. Track progress. Ace interviews...
