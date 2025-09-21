@@ -1,0 +1,45 @@
+class Solution {
+    public int divide(int dividend, int divisor) {
+        // Special case: overflow
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+
+        // Count negatives
+        int negatives = 0;
+
+        // Convert dividend to negative
+        long dividendL = dividend;
+        if (dividendL > 0) {
+            dividendL = -dividendL;
+            negatives++;
+        }
+
+        // Convert divisor to negative
+        long divisorL = divisor;
+        if (divisorL > 0) {
+            divisorL = -divisorL;
+            negatives++;
+        }
+
+        int result = 0;
+
+        // Repeat subtraction using bit-shift
+        while (dividendL <= divisorL) {
+            long tempDivisor = divisorL;
+            int multiple = 1;
+
+            // Keep doubling until too large
+            while (dividendL - tempDivisor <= tempDivisor) {
+                tempDivisor <<= 1;
+                multiple <<= 1;
+            }
+
+            dividendL -= tempDivisor;
+            result += multiple;
+        }
+
+        // If only one is negative → result negative
+        return (negatives == 1) ? -result : result;
+    }
+}
