@@ -1,0 +1,26 @@
+class Solution {
+    public int maxBottlesDrunk(int numBottles, int numExchange) {
+        int full = numBottles;
+        int empty = 0;
+        int curExchange = numExchange;
+        int drank = 0;
+
+        while (full > 0) {
+            // Drink all current full bottles
+            drank += full;
+            empty += full;
+            full = 0;
+
+            // If we have enough empties for the current exchange, do exactly one exchange
+            if (empty >= curExchange) {
+                empty -= curExchange;
+                full += 1;
+                curExchange += 1; // increase numExchange after the exchange
+            } else {
+                break; // cannot exchange anymore
+            }
+        }
+
+        return drank;
+    }
+}
