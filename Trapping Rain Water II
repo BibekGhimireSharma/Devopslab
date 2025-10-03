@@ -1,0 +1,63 @@
+import java.util.PriorityQueue;
+
+class Solution {
+    // helper cell to store position and effective height in the "water world"
+    static class Cell implements Comparable<Cell> {
+        int r, c, h;
+        Cell(int r, int c, int h) { this.r = r; this.c = c; this.h = h; }
+        public int compareTo(Cell o) { return this.h - o.h; }
+    }
+
+    public int trapRainWater(int[][] heightMap) {
+        int m = heightMap.length;
+        if (m == 0) return 0;
+        int n = heightMap[0].length;
+        if (m <= 2 || n <= 2) return 0; // no inner cell to trap water
+
+        boolean[][] visited = new boolean[m][n];
+        PriorityQueue<Cell> pq = new PriorityQueue<>();
+
+        // push all boundary cells into PQ and mark visited
+        for (int i = 0; i < m; i++) {
+            pq.offer(new Cell(i, 0, heightMap[i][0]));
+            pq.offer(new Cell(i, n - 1, heightMap[i][n - 1]));
+            visited[i][0] = true;
+            visited[i][n - 1] = true;
+        }
+        for (int j = 1; j < n - 1; j++) {
+            pq.offer(new Cell(0, j, heightMap[0][j]));
+            pq.offer(new Cell(m - 1, j, heightMap[m - 1][j]));
+            visited[0][j] = true;
+            visited[m - 1][j] = true;
+        }
+
+        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+        int trapped = 0;
+
+        // process cells from lowest boundary upward
+        while (!pq.isEmpty()) {
+            Cell cur = pq.poll();
+
+            // check four neighbors
+            for (int[] d : dirs) {
+                int nr = cur.r + d[0];
+                int nc = cur.c + d[1];
+                if (nr < 0 || nr >= m || nc < 0 || nc >= n || visited[nr][nc]) continue;
+
+                visited[nr][nc] = true;
+                int neighHeight = heightMap[nr][nc];
+
+                // if current boundary is higher than neighbor, water can be trapped
+                if (cur.h > neighHeight) {
+                    trapped += (cur.h - neighHeight);
+                }
+
+                // push neighbor with effective height = max(neighHeight, cur.h)
+                // because water level can't be lower than the current boundary
+                pq.offer(new Cell(nr, nc, Math.max(neighHeight, cur.h)));
+            }
+        }
+
+        return trapped;
+    }
+}
