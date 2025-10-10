@@ -1,0 +1,27 @@
+class Solution {
+    public int maximumEnergy(int[] energy, int k) {
+        int n = energy.length;
+        int ans = Integer.MIN_VALUE;
+        
+        
+        for (int r = 0; r < k; r++) {
+           
+            int suffix = 0;
+            int best = Integer.MIN_VALUE;
+            
+            
+            int last = r;
+            while (last + k < n) last += k;
+            
+            
+            for (int i = last; i >= r; i -= k) {
+                suffix += energy[i];       
+                if (suffix > best) best = suffix;
+            }
+            
+            if (best > ans) ans = best;
+        }
+        
+        return ans;
+    }
+}
