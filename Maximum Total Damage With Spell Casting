@@ -1,0 +1,56 @@
+import java.util.*;
+
+class Solution {
+    public long maximumTotalDamage(int[] power) {
+        
+        HashMap<Long, Long> sumMap = new HashMap<>();
+        for (int p : power) {
+            long key = p;
+            sumMap.put(key, sumMap.getOrDefault(key, 0L) + key);
+        }
+
+      
+        int m = sumMap.size();
+        long[] vals = new long[m];
+        long[] sums = new long[m];
+        int idx = 0;
+        for (Map.Entry<Long, Long> e : sumMap.entrySet()) {
+            vals[idx] = e.getKey();
+            sums[idx] = e.getValue();
+            idx++;
+        }
+        Arrays.sort(vals);
+      
+        for (int i = 0; i < m; ++i) sums[i] = sumMap.get(vals[i]);
+
+      
+        long[] dp = new long[m];
+        for (int i = 0; i < m; ++i) {
+            
+            long skip = (i == 0) ? 0L : dp[i-1];
+
+            
+            int j = lastCompatibleIndex(vals, i, vals[i] - 3);
+            long take = sums[i] + (j >= 0 ? dp[j] : 0L);
+
+            dp[i] = Math.max(skip, take);
+        }
+
+        return m == 0 ? 0L : dp[m-1];
+    }
+
+   
+    private int lastCompatibleIndex(long[] vals, int i, long target) {
+        int lo = 0, hi = i - 1, res = -1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (vals[mid] <= target) {
+                res = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return res;
+    }
+}
