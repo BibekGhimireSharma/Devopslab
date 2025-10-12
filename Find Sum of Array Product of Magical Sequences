@@ -1,0 +1,57 @@
+import java.util.*;
+
+class Solution {
+    static final int MOD = 1_000_000_007;
+    int m, k, n;
+    int[][] C;
+    int[][] pow;
+    int[] pop;
+    Integer[][][][] memo;
+
+    public int magicalSum(int m_, int k_, int[] nums) {
+        this.m = m_; this.k = k_; this.n = nums.length;
+        // combinations up to m
+        C = new int[m+1][m+1];
+        for (int i=0;i<=m;i++){
+            C[i][0]=C[i][i]=1;
+            for (int j=1;j<i;j++) C[i][j] = (C[i-1][j-1] + C[i-1][j]) % MOD;
+        }
+        // pow
+        pow = new int[n][m+1];
+        for (int i=0;i<n;i++){
+            pow[i][0]=1;
+            long b = nums[i]%MOD;
+            for (int e=1;e<=m;e++) pow[i][e] = (int)(pow[i][e-1]*b%MOD);
+        }
+        // popcount for final carry
+        pop = new int[m+1];
+        for (int i=1;i<=m;i++) pop[i] = pop[i>>1] + (i&1);
+
+        memo = new Integer[n+1][m+1][m+1][m+1];
+        return dfs(0, m, 0, 0);
+    }
+
+    // i = current index, rem = how many picks remaining, carry, ones so far
+    private int dfs(int i, int rem, int carry, int ones){
+        if (i == n) {
+            // no indices left, all rem should be 0; if not, no sequences
+            if (rem != 0) return 0;
+            return (ones + pop[carry] == k) ? 1 : 0;
+        }
+        Integer mm = memo[i][rem][carry][ones];
+        if (mm != null) return mm;
+        long ans = 0;
+        // choose x occurrences of index i (0..rem)
+        for (int x=0; x<=rem; x++){
+            int newCarry = (carry + x) >> 1;
+            int newOnes = ones + ((carry + x) & 1);
+            if (newOnes > k) continue; // pruning
+            long ways = C[rem][x];
+            ways = ways * pow[i][x] % MOD;
+            ways = ways * dfs(i+1, rem - x, newCarry, newOnes) % MOD;
+            ans += ways;
+            if (ans >= MOD) ans -= MOD;
+        }
+        return memo[i][rem][carry][ones] = (int)ans;
+    }
+}
