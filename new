@@ -1,0 +1,22 @@
+import java.util.*;
+
+class Solution {
+    public List<String> removeAnagrams(String[] words) {
+        List<String> result = new ArrayList<>();
+        String prevSorted = null;
+        
+        for (String w : words) {
+            char[] arr = w.toCharArray();
+            Arrays.sort(arr);
+            String sorted = new String(arr);
+            
+            if (!sorted.equals(prevSorted)) {
+                result.add(w);
+                prevSorted = sorted;
+            }
+            // else skip w because it's an anagram of previous kept word
+        }
+        
+        return result;
+    }
+}
