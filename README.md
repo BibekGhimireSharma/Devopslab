@@ -13,9 +13,9 @@ Java ☕
 ## 🗂 Problem List
 | #   | Problem | Difficulty | Solution |
 |-----|---------|------------|----------|
-| 1   | Two Sum           | 🟢 Easy   | ./Easy/TwoSum.java |
-| 7   | Reverse Integer   | 🟡 Medium | ./Medium/ReverseInteger.java |
-| 169 | Majority Element  | 🟢 Easy   | ./Easy/MajorityElement.java |
+| 1   | Two Sum           | 🟢 Easy   | ./Easy |
+| 7   | Reverse Integer   | 🟡 Medium | ./Medium |
+| 169 | Majority Element  | 🟢 Easy   | ./Easy |
 
 ## 📌 Topics Covered
 - 🧮 Arrays & Strings
