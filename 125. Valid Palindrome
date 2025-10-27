@@ -1,7 +1,7 @@
 class Solution {
     public boolean isPalindrome(String s) {
         int left = 0, right = s.length() - 1;
-        
+        cc
         while (left < right) {
             // Skip non-alphanumeric characters from the left
             while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
